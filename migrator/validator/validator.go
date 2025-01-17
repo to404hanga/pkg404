@@ -4,9 +4,9 @@ import (
 	"context"
 	"time"
 
-	"github.com/LinSrHang/pkg404/logger"
-	"github.com/LinSrHang/pkg404/migrator"
-	"github.com/LinSrHang/pkg404/migrator/events"
+	"github.com/to404hanga/pkg404/logger"
+	"github.com/to404hanga/pkg404/migrator"
+	"github.com/to404hanga/pkg404/migrator/events"
 	"golang.org/x/sync/errgroup"
 	"gorm.io/gorm"
 )

@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/LinSrHang/pkg404/logger"
-	"github.com/LinSrHang/pkg404/netx"
+	"github.com/to404hanga/pkg404/logger"
+	"github.com/to404hanga/pkg404/netx"
 	clientv3 "go.etcd.io/etcd/client/v3"
 	"go.etcd.io/etcd/client/v3/naming/endpoints"
 	"google.golang.org/grpc"

@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/IBM/sarama"
-	"github.com/LinSrHang/pkg404/logger"
 	"github.com/prometheus/client_golang/prometheus"
+	"github.com/to404hanga/pkg404/logger"
 )
 
 type HandlerV1[T any] struct {

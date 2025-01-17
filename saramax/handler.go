@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/IBM/sarama"
-	"github.com/LinSrHang/pkg404/logger"
+	"github.com/to404hanga/pkg404/logger"
 )
 
 type Handler[T any] struct {

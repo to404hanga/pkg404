@@ -7,8 +7,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/LinSrHang/pkg404/limiter"
 	"github.com/gin-gonic/gin"
+	"github.com/to404hanga/pkg404/limiter"
 )
 
 type Builder struct {

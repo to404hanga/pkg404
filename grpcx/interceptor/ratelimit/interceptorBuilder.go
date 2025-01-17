@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/LinSrHang/pkg404/limiter"
+	"github.com/to404hanga/pkg404/limiter"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

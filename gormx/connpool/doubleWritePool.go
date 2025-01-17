@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"errors"
 
-	"github.com/LinSrHang/pkg404/logger"
+	"github.com/to404hanga/pkg404/logger"
 	"go.uber.org/atomic"
 	"gorm.io/gorm"
 )
