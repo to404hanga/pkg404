@@ -2,11 +2,11 @@ package saramax
 
 import (
 	"encoding/json"
-	"pkg404/logger"
 	"strconv"
 	"time"
 
 	"github.com/IBM/sarama"
+	"github.com/LinSrHang/pkg404/logger"
 	"github.com/prometheus/client_golang/prometheus"
 )
 

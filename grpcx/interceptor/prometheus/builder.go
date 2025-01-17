@@ -2,10 +2,10 @@ package prometheus
 
 import (
 	"context"
-	"pkg404/grpcx/interceptor"
 	"strings"
 	"time"
 
+	"github.com/LinSrHang/pkg404/grpcx/interceptor"
 	"github.com/prometheus/client_golang/prometheus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/status"

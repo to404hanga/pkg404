@@ -2,9 +2,9 @@ package ginx
 
 import (
 	"net/http"
-	"pkg404/logger"
 	"strconv"
 
+	"github.com/LinSrHang/pkg404/logger"
 	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus"
 )

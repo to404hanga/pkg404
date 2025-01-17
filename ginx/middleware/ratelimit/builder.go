@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"pkg404/limiter"
 
+	"github.com/LinSrHang/pkg404/limiter"
 	"github.com/gin-gonic/gin"
 )
 

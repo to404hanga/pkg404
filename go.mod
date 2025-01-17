@@ -1,4 +1,4 @@
-module pkg404
+module github.com/LinSrHang/pkg404
 
 go 1.23.4
 

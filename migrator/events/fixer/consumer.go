@@ -3,14 +3,14 @@ package fixer
 import (
 	"context"
 	"errors"
-	"pkg404/logger"
-	"pkg404/migrator"
-	"pkg404/migrator/events"
-	"pkg404/migrator/fixer"
-	"pkg404/saramax"
 	"time"
 
 	"github.com/IBM/sarama"
+	"github.com/LinSrHang/pkg404/logger"
+	"github.com/LinSrHang/pkg404/migrator"
+	"github.com/LinSrHang/pkg404/migrator/events"
+	"github.com/LinSrHang/pkg404/migrator/fixer"
+	"github.com/LinSrHang/pkg404/saramax"
 	"gorm.io/gorm"
 )
 

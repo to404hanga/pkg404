@@ -2,9 +2,9 @@ package ratelimit
 
 import (
 	"context"
-	"pkg404/limiter"
 	"strings"
 
+	"github.com/LinSrHang/pkg404/limiter"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

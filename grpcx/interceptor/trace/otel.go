@@ -2,8 +2,8 @@ package trace
 
 import (
 	"context"
-	"pkg404/grpcx/interceptor"
 
+	"github.com/LinSrHang/pkg404/grpcx/interceptor"
 	"github.com/go-kratos/kratos/v2/errors"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
@@ -33,7 +33,7 @@ func NewOTELInterceptorBuilder(serviceName string, tracer trace.Tracer, propagat
 func (b *OTELInterceptorBuilder) BuildUnaryServerInterceptor() grpc.UnaryServerInterceptor {
 	tracer := b.tracer
 	if tracer == nil {
-		tracer = otel.Tracer("pkg404/grpcx")
+		tracer = otel.Tracer("github.com/LinSrHang/pkg404/grpcx")
 	}
 	propagator := b.propagator
 	if propagator == nil {
@@ -65,7 +65,7 @@ func (b *OTELInterceptorBuilder) BuildUnaryServerInterceptor() grpc.UnaryServerI
 func (b *OTELInterceptorBuilder) BuildUnaryClientInterceptor() grpc.UnaryClientInterceptor {
 	tracer := b.tracer
 	if tracer == nil {
-		tracer = otel.GetTracerProvider().Tracer("pkg404/grpcx")
+		tracer = otel.GetTracerProvider().Tracer("github.com/LinSrHang/pkg404/grpcx")
 	}
 	propagator := b.propagator
 	if propagator == nil {

@@ -3,11 +3,11 @@ package grpcx
 import (
 	"context"
 	"net"
-	"pkg404/logger"
-	"pkg404/netx"
 	"strconv"
 	"time"
 
+	"github.com/LinSrHang/pkg404/logger"
+	"github.com/LinSrHang/pkg404/netx"
 	clientv3 "go.etcd.io/etcd/client/v3"
 	"go.etcd.io/etcd/client/v3/naming/endpoints"
 	"google.golang.org/grpc"

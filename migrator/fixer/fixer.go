@@ -1,9 +1,8 @@
 package fixer
 
 import (
-	"pkg404/migrator"
-	"pkg404/migrator/events"
-
+	"github.com/LinSrHang/pkg404/migrator"
+	"github.com/LinSrHang/pkg404/migrator/events"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )

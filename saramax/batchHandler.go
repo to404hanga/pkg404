@@ -3,10 +3,10 @@ package saramax
 import (
 	"context"
 	"encoding/json"
-	"pkg404/logger"
 	"time"
 
 	"github.com/IBM/sarama"
+	"github.com/LinSrHang/pkg404/logger"
 )
 
 type BatchHandler[T any] struct {

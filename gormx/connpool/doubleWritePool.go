@@ -4,8 +4,8 @@ import (
 	"context"
 	"database/sql"
 	"errors"
-	"pkg404/logger"
 
+	"github.com/LinSrHang/pkg404/logger"
 	"go.uber.org/atomic"
 	"gorm.io/gorm"
 )

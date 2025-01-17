@@ -3,11 +3,11 @@ package logger
 import (
 	"context"
 	"fmt"
-	"pkg404/grpcx/interceptor"
-	"pkg404/logger"
 	"runtime"
 	"time"
 
+	"github.com/LinSrHang/pkg404/grpcx/interceptor"
+	"github.com/LinSrHang/pkg404/logger"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

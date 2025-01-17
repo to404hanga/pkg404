@@ -2,10 +2,10 @@ package validator
 
 import (
 	"context"
-	"pkg404/logger"
-	"pkg404/migrator"
-	"pkg404/migrator/events"
 
+	"github.com/LinSrHang/pkg404/logger"
+	"github.com/LinSrHang/pkg404/migrator"
+	"github.com/LinSrHang/pkg404/migrator/events"
 	"gorm.io/gorm"
 )
 
