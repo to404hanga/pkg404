@@ -2,7 +2,7 @@
 // Source: ./types.go
 
 // Package limitermocks is a generated GoMock package.
-package limitermocks
+package mocks
 
 import (
 	context "context"
