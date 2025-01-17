@@ -6,11 +6,11 @@ import (
 	"time"
 
 	"github.com/IBM/sarama"
-	"github.com/LinSrHang/pkg404/logger"
-	"github.com/LinSrHang/pkg404/migrator"
-	"github.com/LinSrHang/pkg404/migrator/events"
-	"github.com/LinSrHang/pkg404/migrator/fixer"
-	"github.com/LinSrHang/pkg404/saramax"
+	"github.com/to404hanga/pkg404/logger"
+	"github.com/to404hanga/pkg404/migrator"
+	"github.com/to404hanga/pkg404/migrator/events"
+	"github.com/to404hanga/pkg404/migrator/fixer"
+	"github.com/to404hanga/pkg404/saramax"
 	"gorm.io/gorm"
 )
 
