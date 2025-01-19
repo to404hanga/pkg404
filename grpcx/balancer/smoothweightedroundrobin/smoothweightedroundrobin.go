@@ -1,4 +1,4 @@
-package wrr
+package smoothweightedroundrobin
 
 import (
 	"context"
@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-const Name = "custom_weighted_round_robin"
+const Name = "smooth_weighted_round_robin"
 
 func newBuilder() balancer.Builder {
 	return base.NewBalancerBuilder(Name, &PickerBuilder{}, base.Config{
