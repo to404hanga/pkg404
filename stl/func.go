@@ -1,4 +1,4 @@
-package internal
+package stl
 
 import "github.com/to404hanga/pkg404/stl/interfaces"
 

@@ -1,8 +1,8 @@
 package queue
 
 import (
+	"github.com/to404hanga/pkg404/stl/heap"
 	"github.com/to404hanga/pkg404/stl/interfaces"
-	"github.com/to404hanga/pkg404/stl/internal/heap"
 )
 
 type PriorityQueue[T any] struct {

@@ -2,7 +2,7 @@ package heap
 
 import (
 	"github.com/to404hanga/pkg404/stl/interfaces"
-	"github.com/to404hanga/pkg404/stl/internal/transform"
+	"github.com/to404hanga/pkg404/stl/transform"
 )
 
 type MinHeap[T any] struct {

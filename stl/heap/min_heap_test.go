@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/to404hanga/pkg404/stl"
 	"github.com/to404hanga/pkg404/stl/interfaces"
-	"github.com/to404hanga/pkg404/stl/internal"
 )
 
 func TestMinHeap_NewMinHeap(t *testing.T) {
@@ -39,7 +39,7 @@ func TestMinHeap_NewMinHeapFunc(t *testing.T) {
 		{
 			name:     "成功构建",
 			data:     []int{1, 2, 3, 4, 5},
-			less:     internal.OrderedGreater[int],
+			less:     stl.OrderedGreater[int],
 			wantBool: true,
 		},
 	}
@@ -115,7 +115,7 @@ func TestMinHeap_PushFunc(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			heap := NewMinHeapFunc([]int{}, internal.OrderedGreater)
+			heap := NewMinHeapFunc([]int{}, stl.OrderedGreater)
 			assert.Equal(t, tc.wantBool, heap.IsMinHeap())
 			heap.Push(tc.val)
 			assert.Equal(t, tc.wantBool, heap.IsMinHeap())
@@ -140,7 +140,7 @@ func TestMinHeap_PopFunc(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			heap := NewMinHeapFunc(tc.data, internal.OrderedGreater)
+			heap := NewMinHeapFunc(tc.data, stl.OrderedGreater)
 			assert.Equal(t, tc.wantBool, heap.IsMinHeap())
 			assert.Equal(t, tc.wantEle, heap.Pop())
 			assert.Equal(t, tc.wantBool, heap.IsMinHeap())
@@ -194,7 +194,7 @@ func TestMinHeap_RemoveFunc(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			heap := NewMinHeapFunc(tc.data, internal.OrderedGreater)
+			heap := NewMinHeapFunc(tc.data, stl.OrderedGreater)
 			assert.Equal(t, tc.wantBool, heap.IsMinHeap())
 			heap.Remove(tc.removeIdx)
 			assert.Equal(t, tc.wantBool, heap.IsMinHeap())
@@ -238,7 +238,7 @@ func TestMinHeap_TopFunc(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			heap := NewMinHeapFunc(tc.data, internal.OrderedGreater)
+			heap := NewMinHeapFunc(tc.data, stl.OrderedGreater)
 			assert.Equal(t, tc.wantEle, heap.Top())
 		})
 	}
