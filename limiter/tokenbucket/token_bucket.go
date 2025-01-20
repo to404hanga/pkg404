@@ -15,7 +15,7 @@ type TokenBucket struct {
 	closeOnce sync.Once
 }
 
-func NewTokenBucket(interval time.Duration, bucketSize int) *TokenBucket {
+func NewTokenBucketLimiter(interval time.Duration, bucketSize int) *TokenBucket {
 	return &TokenBucket{
 		interval: interval,
 		buckets:  make(chan struct{}, bucketSize),
