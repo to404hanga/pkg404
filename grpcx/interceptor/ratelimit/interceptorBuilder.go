@@ -11,12 +11,17 @@ import (
 )
 
 type InterceptorBuilder struct {
-	limiter limiter.Limiter
-	key     string
+	limiter          limiter.Limiter
+	key              string
+	fullMethodPrefix string
 }
 
-func NewInterceptorBuilder(limiter limiter.Limiter, key string) *InterceptorBuilder {
-	return &InterceptorBuilder{limiter: limiter, key: key}
+func NewInterceptorBuilder(limiter limiter.Limiter, key, fullMethodPrefix string) *InterceptorBuilder {
+	return &InterceptorBuilder{
+		limiter:          limiter,
+		key:              key,
+		fullMethodPrefix: fullMethodPrefix,
+	}
 }
 
 func (b *InterceptorBuilder) BuildServerUnaryInterceptor() grpc.UnaryServerInterceptor {
@@ -31,7 +36,7 @@ func (b *InterceptorBuilder) BuildServerUnaryInterceptor() grpc.UnaryServerInter
 
 func (b *InterceptorBuilder) BuildServerStreamInterceptorService() grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp any, err error) {
-		if strings.HasPrefix(info.FullMethod, "/UserService") {
+		if strings.HasPrefix(info.FullMethod, b.fullMethodPrefix) {
 			limited, err := b.limiter.Limit(ctx, b.key)
 			if err != nil {
 				return nil, status.Errorf(codes.ResourceExhausted, "限流")
