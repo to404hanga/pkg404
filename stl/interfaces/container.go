@@ -1,4 +1,4 @@
-package stl
+package interfaces
 
 type Container interface {
 	// Empty 返回容器是否为空（即没有元素）

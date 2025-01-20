@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/to404hanga/pkg404/stl"
+	"github.com/to404hanga/pkg404/stl/interfaces"
 )
 
 func TestSliceVector_Interface(t *testing.T) {
@@ -13,17 +13,17 @@ func TestSliceVector_Interface(t *testing.T) {
 		fn   func()
 	}{
 		{
-			name: "实现 stl.Vector 接口",
+			name: "实现 interfaces.Vector 接口",
 			fn: func() {
 				v := NewSliceVector[int]()
-				_ = stl.Vector[int](&v)
+				_ = interfaces.Vector[int](&v)
 			},
 		},
 		{
-			name: "实现 stl.Container 接口",
+			name: "实现 interfaces.Container 接口",
 			fn: func() {
 				v := NewSliceVector[int]()
-				_ = stl.Container(&v)
+				_ = interfaces.Container(&v)
 			},
 		},
 	}

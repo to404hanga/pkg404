@@ -1,4 +1,4 @@
-package stl
+package interfaces
 
 type Iterator[T any] interface {
 	// NotEnd 返回当前迭代器是否指向容器末尾

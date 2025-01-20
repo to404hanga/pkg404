@@ -1,4 +1,4 @@
-package stl
+package interfaces
 
 type Map[K any, V any] interface {
 	Container

@@ -1,4 +1,4 @@
-package stl
+package interfaces
 
 type Heap[T any] interface {
 	Container

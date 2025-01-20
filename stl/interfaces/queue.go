@@ -1,4 +1,4 @@
-package stl
+package interfaces
 
 type Queue[T any] interface {
 	Container

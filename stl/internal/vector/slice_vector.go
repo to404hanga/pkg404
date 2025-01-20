@@ -1,14 +1,14 @@
 package vector
 
 import (
-	"github.com/to404hanga/pkg404/stl"
+	"github.com/to404hanga/pkg404/stl/interfaces"
 	"github.com/to404hanga/pkg404/stl/internal/transform"
 )
 
 // SliceVector 基于切片实现的向量
 type SliceVector[T any] []T
 
-var _ stl.Vector[any] = (*SliceVector[any])(nil)
+var _ interfaces.Vector[any] = (*SliceVector[any])(nil)
 
 // NewSliceVector 新建一个基于切片的向量
 func NewSliceVector[T any]() SliceVector[T] {
@@ -26,28 +26,28 @@ func NewSliceVectorFromSlice[T any](v ...T) SliceVector[T] {
 	return (SliceVector[T])(v)
 }
 
-// Empty 实现了 stl.Container 接口
+// Empty 实现了 interfaces.Container 接口
 //
 // 返回 SliceVector 是否为空
 func (v SliceVector[T]) Empty() bool {
 	return len(v) == 0
 }
 
-// Len 实现了 stl.Container 接口
+// Len 实现了 interfaces.Container 接口
 //
 // 返回 SliceVector 中元素的数量
 func (v SliceVector[T]) Len() int {
 	return len(v)
 }
 
-// Cap 实现了 stl.Vector 接口
+// Cap 实现了 interfaces.Vector 接口
 //
 // 返回 SliceVector 的容量
 func (v SliceVector[T]) Cap() int {
 	return cap(v)
 }
 
-// Clear 实现了 stl.Container 接口
+// Clear 实现了 interfaces.Container 接口
 //
 // 清空 SliceVector 但容量不变
 func (v *SliceVector[T]) Clear() {
@@ -55,7 +55,7 @@ func (v *SliceVector[T]) Clear() {
 	*v = (*v)[:0]
 }
 
-// Reserve 实现了 stl.Vector 接口
+// Reserve 实现了 interfaces.Vector 接口
 //
 // 将 SliceVector 的容量增加到指定值
 //
@@ -68,7 +68,7 @@ func (v *SliceVector[T]) Reserve(capacity int) {
 	}
 }
 
-// Shrink 实现了 stl.Vector 接口
+// Shrink 实现了 interfaces.Vector 接口
 //
 // 将 SliceVector 容量缩减至与长度相等
 func (v *SliceVector[T]) Shrink() {
@@ -77,7 +77,7 @@ func (v *SliceVector[T]) Shrink() {
 	}
 }
 
-// At 实现了 stl.Vector 接口
+// At 实现了 interfaces.Vector 接口
 //
 // 获取 SliceVector 指定位置的值，无法获取 [len(v), cap(v)) 区间的值
 //
@@ -89,7 +89,7 @@ func (v SliceVector[T]) At(idx int) T {
 	return v[idx]
 }
 
-// Set 实现了 stl.Vector 接口
+// Set 实现了 interfaces.Vector 接口
 //
 // 设置 SliceVector 指定位置的值，无法在 [len(v), cap(v)) 区间设置值
 //
@@ -101,14 +101,14 @@ func (v *SliceVector[T]) Set(idx int, val T) {
 	(*v)[idx] = val
 }
 
-// PushBack 实现了 stl.Vector 接口
+// PushBack 实现了 interfaces.Vector 接口
 //
 // 在 SliceVector 尾部插入值
 func (v *SliceVector[T]) PushBack(val T) {
 	*v = append(*v, val)
 }
 
-// PopBack 实现了 stl.Vector 接口
+// PopBack 实现了 interfaces.Vector 接口
 //
 // 从 SliceVector 尾部删除值
 func (v *SliceVector[T]) PopBack() T {
@@ -122,7 +122,7 @@ func (v *SliceVector[T]) PopBack() T {
 	return val
 }
 
-// Back 实现了 stl.Vector 接口
+// Back 实现了 interfaces.Vector 接口
 //
 // 返回 SliceVector 尾部的值
 func (v SliceVector[T]) Back() T {
@@ -132,14 +132,14 @@ func (v SliceVector[T]) Back() T {
 	return v[v.Len()-1]
 }
 
-// Append 实现了 stl.Vector 接口
+// Append 实现了 interfaces.Vector 接口
 //
 // 往 SliceVector 尾部追加若干元素
 func (v *SliceVector[T]) Append(vals ...T) {
 	*v = append(*v, vals...)
 }
 
-// Insert 实现了 stl.Vector 接口
+// Insert 实现了 interfaces.Vector 接口
 //
 // 往 SliceVector 指定位置插入若干元素
 func (v *SliceVector[T]) Insert(idx int, vals ...T) {
@@ -162,14 +162,14 @@ func (v *SliceVector[T]) Insert(idx int, vals ...T) {
 	*v = tmp
 }
 
-// Remove 实现了 stl.Vector 接口
+// Remove 实现了 interfaces.Vector 接口
 //
 // 删除 SliceVector 指定下标的元素
 func (v *SliceVector[T]) Remove(idx int) {
 	v.RemoveRange(idx, idx+1)
 }
 
-// RemoveRange 实现了 stl.Vector 接口
+// RemoveRange 实现了 interfaces.Vector 接口
 //
 // 删除 SliceVector 中位于 [start, end) 区间的元素
 func (v *SliceVector[T]) RemoveRange(start, end int) {
@@ -184,7 +184,7 @@ func (v *SliceVector[T]) RemoveRange(start, end int) {
 	transform.FillZero(oldV[v.Len():])
 }
 
-// RemoveIf 实现了 stl.Vector 接口
+// RemoveIf 实现了 interfaces.Vector 接口
 //
 // 删除 SliceVector 满足条件的元素
 func (v *SliceVector[T]) RemoveIf(condition func(T) bool) {
@@ -231,14 +231,14 @@ func (v *SliceVector[T]) ForEachMutableIf(cb func(val *T) bool) {
 	}
 }
 
-func (v SliceVector[T]) Iterate() stl.MutableIterator[T] {
+func (v SliceVector[T]) Iterate() interfaces.MutableIterator[T] {
 	return &vectorIterator[T]{
 		vec: v,
 		idx: 0,
 	}
 }
 
-func (v SliceVector[T]) IterateRange(start, end int) stl.MutableIterator[T] {
+func (v SliceVector[T]) IterateRange(start, end int) interfaces.MutableIterator[T] {
 	return &vectorIterator[T]{
 		vec: v[start:end],
 		idx: 0,
@@ -250,7 +250,7 @@ type vectorIterator[T any] struct {
 	idx int
 }
 
-var _ stl.MutableIterator[any] = (*vectorIterator[any])(nil)
+var _ interfaces.MutableIterator[any] = (*vectorIterator[any])(nil)
 
 func (it vectorIterator[T]) Value() T {
 	return it.vec[it.idx]

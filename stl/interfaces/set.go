@@ -1,4 +1,4 @@
-package stl
+package interfaces
 
 type Set[K any] interface {
 	Container

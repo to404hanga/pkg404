@@ -1,7 +1,7 @@
 package heap
 
 import (
-	"github.com/to404hanga/pkg404/stl"
+	"github.com/to404hanga/pkg404/stl/interfaces"
 	"github.com/to404hanga/pkg404/stl/internal/transform"
 )
 
@@ -10,9 +10,9 @@ type MinHeap[T any] struct {
 	impl minHeapImpl[T]
 }
 
-var _ stl.Heap[any] = (*MinHeap[any])(nil)
+var _ interfaces.Heap[any] = (*MinHeap[any])(nil)
 
-func NewMinHeap[T stl.Ordered](array []T) *MinHeap[T] {
+func NewMinHeap[T interfaces.Ordered](array []T) *MinHeap[T] {
 	hp := minHeapOrdered[T]{}
 	hp.impl = (minHeapImpl[T])(&hp)
 	hp.heap = array
@@ -20,7 +20,7 @@ func NewMinHeap[T stl.Ordered](array []T) *MinHeap[T] {
 	return &hp.MinHeap
 }
 
-func NewMinHeapFunc[T any](array []T, less stl.LessFunc[T]) *MinHeap[T] {
+func NewMinHeapFunc[T any](array []T, less interfaces.LessFunc[T]) *MinHeap[T] {
 	hp := minHeapFunc[T]{}
 	hp.less = less
 	hp.impl = (minHeapImpl[T])(&hp)
@@ -71,7 +71,7 @@ type minHeapImpl[T any] interface {
 	IsMinHeap() bool
 }
 
-type minHeapOrdered[T stl.Ordered] struct {
+type minHeapOrdered[T interfaces.Ordered] struct {
 	MinHeap[T]
 }
 
@@ -165,7 +165,7 @@ func (m *minHeapOrdered[T]) heapDown(idx, n int) bool {
 
 type minHeapFunc[T any] struct {
 	MinHeap[T]
-	less stl.LessFunc[T]
+	less interfaces.LessFunc[T]
 }
 
 func (m *minHeapFunc[T]) Top() T {

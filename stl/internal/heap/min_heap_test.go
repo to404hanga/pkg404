@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/to404hanga/pkg404/stl"
+	"github.com/to404hanga/pkg404/stl/interfaces"
 	"github.com/to404hanga/pkg404/stl/internal"
 )
 
@@ -33,7 +33,7 @@ func TestMinHeap_NewMinHeapFunc(t *testing.T) {
 	testCases := []struct {
 		name     string
 		data     []int
-		less     stl.LessFunc[int]
+		less     interfaces.LessFunc[int]
 		wantBool bool
 	}{
 		{

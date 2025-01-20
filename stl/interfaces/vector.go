@@ -1,4 +1,4 @@
-package stl
+package interfaces
 
 type Vector[T any] interface {
 	Container

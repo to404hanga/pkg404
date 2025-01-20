@@ -1,4 +1,4 @@
-package stl
+package interfaces
 
 // Signed 有符号整数类型接口
 type Signed interface {
