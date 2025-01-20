@@ -201,3 +201,45 @@ func TestMinHeap_RemoveFunc(t *testing.T) {
 		})
 	}
 }
+
+func TestMinHeap_Top(t *testing.T) {
+	testCases := []struct {
+		name    string
+		data    []int
+		wantEle int
+	}{
+		{
+			name:    "成功删除",
+			data:    []int{5, 4, 3, 2, 1},
+			wantEle: 1,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			heap := NewMinHeap(tc.data)
+			assert.Equal(t, tc.wantEle, heap.Top())
+		})
+	}
+}
+
+func TestMinHeap_TopFunc(t *testing.T) {
+	testCases := []struct {
+		name    string
+		data    []int
+		wantEle int
+	}{
+		{
+			name:    "成功删除",
+			data:    []int{5, 4, 3, 2, 1},
+			wantEle: 5,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			heap := NewMinHeapFunc(tc.data, internal.OrderedGreater)
+			assert.Equal(t, tc.wantEle, heap.Top())
+		})
+	}
+}

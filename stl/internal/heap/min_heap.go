@@ -54,6 +54,10 @@ func (m *MinHeap[T]) Pop() T {
 	return m.impl.Pop()
 }
 
+func (m *MinHeap[T]) Top() T {
+	return m.impl.Top()
+}
+
 func (m *MinHeap[T]) Remove(idx int) T {
 	return m.impl.Remove(idx)
 }
@@ -61,6 +65,7 @@ func (m *MinHeap[T]) Remove(idx int) T {
 type minHeapImpl[T any] interface {
 	Push(v T)
 	Pop() T
+	Top() T
 	Make()
 	Remove(idx int) T
 	IsMinHeap() bool
@@ -102,6 +107,10 @@ func (m *minHeapOrdered[T]) Pop() T {
 	ret := m.heap[n]
 	m.heap = m.heap[:n]
 	return ret
+}
+
+func (m *minHeapOrdered[T]) Top() T {
+	return m.heap[0]
 }
 
 func (m *minHeapOrdered[T]) Remove(idx int) T {
@@ -157,6 +166,10 @@ func (m *minHeapOrdered[T]) heapDown(idx, n int) bool {
 type minHeapFunc[T any] struct {
 	MinHeap[T]
 	less stl.LessFunc[T]
+}
+
+func (m *minHeapFunc[T]) Top() T {
+	return m.heap[0]
 }
 
 func (m *minHeapFunc[T]) IsMinHeap() bool {
