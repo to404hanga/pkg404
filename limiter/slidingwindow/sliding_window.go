@@ -5,14 +5,27 @@ import (
 	"sync"
 	"time"
 
-	"github.com/to404hanga/pkg404/stl/public/queue"
+	"github.com/to404hanga/pkg404/limiter"
+	"github.com/to404hanga/pkg404/stl/queue"
 )
 
 type SlidingWindowLimiter struct {
 	window    time.Duration
-	queue     queue.PriorityQueue[time.Time]
+	queue     *queue.PriorityQueue[time.Time]
 	lock      sync.Mutex
 	threshold int
+}
+
+var _ limiter.Limiter = (*SlidingWindowLimiter)(nil)
+
+func NewSlidingWindowLimiter(window time.Duration, threshold int) *SlidingWindowLimiter {
+	return &SlidingWindowLimiter{
+		window: window,
+		queue: queue.NewPriorityQueueFunc[time.Time](func(left, right time.Time) bool {
+			return left.Before(right)
+		}),
+		threshold: threshold,
+	}
 }
 
 func (s *SlidingWindowLimiter) Limit(ctx context.Context, key string) (bool, error) {
