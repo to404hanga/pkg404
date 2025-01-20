@@ -5,6 +5,8 @@ import (
 	"github.com/to404hanga/pkg404/stl/internal/queue"
 )
 
+type PriorityQueue[T any] queue.PriorityQueue[T]
+
 func NewPriorityQueue[T interfaces.Ordered]() *queue.PriorityQueue[T] {
 	return queue.NewPriorityQueue[T]()
 }

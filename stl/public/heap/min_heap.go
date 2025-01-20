@@ -5,6 +5,8 @@ import (
 	"github.com/to404hanga/pkg404/stl/internal/heap"
 )
 
+type MinHeap[T any] heap.MinHeap[T]
+
 func NewMinHeap[T interfaces.Ordered](array []T) *heap.MinHeap[T] {
 	return heap.NewMinHeap(array)
 }

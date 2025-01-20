@@ -2,6 +2,8 @@ package vector
 
 import "github.com/to404hanga/pkg404/stl/internal/vector"
 
+type SliceVector[T any] vector.SliceVector[T]
+
 // NewSliceVector 新建一个基于切片的向量
 func NewSliceVector[T any]() vector.SliceVector[T] {
 	return vector.NewSliceVector[T]()
