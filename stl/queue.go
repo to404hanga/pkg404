@@ -27,3 +27,13 @@ type Deque[T any] interface {
 	// PopBack 从队尾移除元素并返回
 	PopBack() T
 }
+
+type PriorityQueue[T any] interface {
+	Container
+	// Top 返回队首元素的值
+	Top() T
+	// Push 往优先队列添加元素
+	Push(T)
+	// Pop 从队首移除元素并返回
+	Pop() T
+}
