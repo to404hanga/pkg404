@@ -1,4 +1,4 @@
-package gormx
+package prometheus
 
 import (
 	"time"
@@ -8,15 +8,33 @@ import (
 )
 
 type Callbacks struct {
-	vector *prometheus.SummaryVec
-}
-
-func (c *Callbacks) Name() string {
-	return "prometheus"
+	Namespace  string
+	Subsystem  string
+	Name       string
+	InstanceId string
+	Help       string
+	vector     *prometheus.SummaryVec
 }
 
 func (c *Callbacks) Initialize(db *gorm.DB) error {
-	err := db.Callback().Create().Before("*").Register("prometheus_create_before", c.Before())
+	vector := prometheus.NewSummaryVec(prometheus.SummaryOpts{
+		Name:      c.Name,
+		Subsystem: c.Subsystem,
+		Namespace: c.Namespace,
+		Help:      c.Help,
+		ConstLabels: map[string]string{
+			"db_name":     db.Name(),
+			"instance_id": c.InstanceId,
+		},
+		Objectives: map[float64]float64{
+			0.9:  0.01,
+			0.99: 0.001,
+		},
+	}, []string{"type", "table"})
+	prometheus.MustRegister(vector)
+	c.vector = vector
+
+	err := db.Callback().Create().Before("*").Register("prometheus_create_before", c.Before("CREATE"))
 	if err != nil {
 		return err
 	}
@@ -24,7 +42,7 @@ func (c *Callbacks) Initialize(db *gorm.DB) error {
 	if err != nil {
 		return err
 	}
-	err = db.Callback().Query().Before("*").Register("prometheus_query_before", c.Before())
+	err = db.Callback().Query().Before("*").Register("prometheus_query_before", c.Before("QUERY"))
 	if err != nil {
 		return err
 	}
@@ -32,7 +50,7 @@ func (c *Callbacks) Initialize(db *gorm.DB) error {
 	if err != nil {
 		return err
 	}
-	err = db.Callback().Raw().Before("*").Register("prometheus_raw_before", c.Before())
+	err = db.Callback().Raw().Before("*").Register("prometheus_raw_before", c.Before("RAW"))
 	if err != nil {
 		return err
 	}
@@ -40,7 +58,7 @@ func (c *Callbacks) Initialize(db *gorm.DB) error {
 	if err != nil {
 		return err
 	}
-	err = db.Callback().Update().Before("*").Register("prometheus_update_before", c.Before())
+	err = db.Callback().Update().Before("*").Register("prometheus_update_before", c.Before("UPDATE"))
 	if err != nil {
 		return err
 	}
@@ -48,7 +66,7 @@ func (c *Callbacks) Initialize(db *gorm.DB) error {
 	if err != nil {
 		return err
 	}
-	err = db.Callback().Delete().Before("*").Register("prometheus_delete_before", c.Before())
+	err = db.Callback().Delete().Before("*").Register("prometheus_delete_before", c.Before("DELETE"))
 	if err != nil {
 		return err
 	}
@@ -56,7 +74,7 @@ func (c *Callbacks) Initialize(db *gorm.DB) error {
 	if err != nil {
 		return err
 	}
-	err = db.Callback().Row().Before("*").Register("prometheus_row_before", c.Before())
+	err = db.Callback().Row().Before("*").Register("prometheus_row_before", c.Before("ROW"))
 	if err != nil {
 		return err
 	}
@@ -75,7 +93,7 @@ func NewCallbacks(opts prometheus.SummaryOpts) *Callbacks {
 	}
 }
 
-func (c *Callbacks) Before() func(db *gorm.DB) {
+func (c *Callbacks) Before(eventType string) func(db *gorm.DB) {
 	return func(db *gorm.DB) {
 		start := time.Now()
 		db.Set("start_time", start)
