@@ -10,7 +10,7 @@ func TestSlice_SliceFromSlice(t *testing.T) {
 	{
 		name := "int转int64"
 		src := []int{1, 2, 3}
-		fn := func(src int) int64 {
+		fn := func(idx int, src int) int64 {
 			return int64(src)
 		}
 		wantDst := []int64{1, 2, 3}
@@ -23,7 +23,7 @@ func TestSlice_SliceFromSlice(t *testing.T) {
 	{
 		name := "int转float32"
 		src := []int{1, 2, 3}
-		fn := func(src int) float32 {
+		fn := func(idx int, src int) float32 {
 			return float32(src)
 		}
 		wantDst := []float32{1, 2, 3}
@@ -44,7 +44,7 @@ func TestSlice_SliceFromSlice(t *testing.T) {
 			{name: "name3", age: 3},
 			{name: "name2", age: 2},
 		}
-		fn := func(src TestStruct) string {
+		fn := func(idx int, src TestStruct) string {
 			return src.name
 		}
 		wantDst := []string{"name1", "name3", "name2"}
@@ -68,7 +68,7 @@ func TestSlice_SliceFromSlice(t *testing.T) {
 			{name: "name3", age: 3},
 			{name: "name2", age: 2},
 		}
-		fn := func(src TestStruct1) TestStruct2 {
+		fn := func(idx int, src TestStruct1) TestStruct2 {
 			var ret TestStruct2
 			ret.age2 = src.age * src.age
 			return ret
