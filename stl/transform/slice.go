@@ -1,10 +1,10 @@
 package transform
 
 // SliceFromSlice 将 SRC 类型切片按 fn 所定义的步骤转换为 DST 类型切片
-func SliceFromSlice[SRC any, DST any](src []SRC, fn func(SRC) DST) []DST {
+func SliceFromSlice[SRC any, DST any](src []SRC, fn func(int, SRC) DST) []DST {
 	ret := make([]DST, 0, len(src))
-	for _, val := range src {
-		ret = append(ret, fn(val))
+	for idx, val := range src {
+		ret = append(ret, fn(idx, val))
 	}
 	return ret
 }
