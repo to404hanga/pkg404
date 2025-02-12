@@ -4,8 +4,6 @@ type Queue[T any] interface {
 	Container
 	// Front 返回队首元素的值
 	Front() T
-	// Back 返回队尾元素的值
-	Back() T
 	// Push 往队尾添加元素
 	Push(T)
 	// Pop 从队首移除元素并返回
