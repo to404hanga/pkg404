@@ -1,6 +1,9 @@
 package logger
 
-import "strings"
+import (
+	"strings"
+	"time"
+)
 
 var DEBUG = false
 
@@ -64,4 +67,28 @@ func Int32(key string, val int32) Field {
 
 func Int64(key string, val int64) Field {
 	return Field{Key: key, Val: val}
+}
+
+// 默认 layout 为 time.RFC3339，仅第一个有效
+func TimeString(val time.Time, layout ...string) Field {
+	if len(layout) > 0 {
+		return Field{Key: "time", Val: val.Format(layout[0])}
+	}
+	return Field{Key: "time", Val: val.Format(time.RFC3339)}
+}
+
+func TimeUnixMilli(val time.Time) Field {
+	return Field{Key: "time", Val: val.UnixMilli()}
+}
+
+func TimeUnixNano(val time.Time) Field {
+	return Field{Key: "time", Val: val.UnixNano()}
+}
+
+func TimeUnixMicros(val time.Time) Field {
+	return Field{Key: "time", Val: val.UnixMicro()}
+}
+
+func TimeUnix(val time.Time) Field {
+	return Field{Key: "time", Val: val.Unix()}
 }
