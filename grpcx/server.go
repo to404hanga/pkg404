@@ -34,6 +34,7 @@ func (s *Server) Serve() error {
 	if err != nil {
 		return err
 	}
+	port = strconv.Itoa(l.Addr().(*net.TCPAddr).Port)
 	err = s.register(ctx, port)
 	if err != nil {
 		return err
