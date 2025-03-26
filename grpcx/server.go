@@ -51,8 +51,8 @@ func (s *Server) register(ctx context.Context, port string) error {
 	}
 	s.etcdManager = em
 	ip := netx.GetOutboundIP()
-	s.etcdKey = serviceName + "/" + ip
 	addr := ip + ":" + port
+	s.etcdKey = serviceName + "/" + addr
 	leaseResp, err := cli.Grant(ctx, s.EtcdTTL)
 	if err != nil {
 		return err
