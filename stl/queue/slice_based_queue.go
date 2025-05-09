@@ -1,7 +1,7 @@
 package queue
 
 import (
-	"github.com/to404hanga/pkg404/gotools/transform"
+	"github.com/to404hanga/pkg404/gotools/zero"
 	"github.com/to404hanga/pkg404/stl/interfaces"
 )
 
@@ -42,7 +42,7 @@ func (q *SliceBasedQueue[T]) Len() int {
 
 // Clear 清空队列
 func (q *SliceBasedQueue[T]) Clear() {
-	transform.FillZero(q.data)
+	zero.FillZero(q.data)
 	q.data = q.data[:0]
 }
 

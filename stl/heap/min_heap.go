@@ -1,7 +1,7 @@
 package heap
 
 import (
-	"github.com/to404hanga/pkg404/gotools/transform"
+	"github.com/to404hanga/pkg404/gotools/zero"
 	"github.com/to404hanga/pkg404/stl/interfaces"
 )
 
@@ -42,7 +42,7 @@ func (m *MinHeap[T]) Empty() bool {
 }
 
 func (m *MinHeap[T]) Clear() {
-	transform.FillZero(m.heap)
+	zero.FillZero(m.heap)
 	m.heap = m.heap[:0]
 }
 

@@ -1,7 +1,7 @@
 package vector
 
 import (
-	"github.com/to404hanga/pkg404/gotools/transform"
+	"github.com/to404hanga/pkg404/gotools/zero"
 	"github.com/to404hanga/pkg404/stl/interfaces"
 )
 
@@ -51,7 +51,7 @@ func (v SliceVector[T]) Cap() int {
 //
 // 清空 SliceVector 但容量不变
 func (v *SliceVector[T]) Clear() {
-	transform.FillZero(*v)
+	zero.FillZero(*v)
 	*v = (*v)[:0]
 }
 
@@ -181,7 +181,7 @@ func (v *SliceVector[T]) RemoveRange(start, end int) {
 	}
 	oldV := *v
 	*v = append((*v)[:start], (*v)[end:]...)
-	transform.FillZero(oldV[v.Len():])
+	zero.FillZero(oldV[v.Len():])
 }
 
 // RemoveIf 实现了 interfaces.Vector 接口
@@ -200,7 +200,7 @@ func (v *SliceVector[T]) RemoveIf(condition func(T) bool) {
 		}
 		return slice[:j]
 	}(*v, condition)
-	transform.FillZero(oldV[v.Len():])
+	zero.FillZero(oldV[v.Len():])
 }
 
 func (v SliceVector[T]) ForEach(cb func(val T)) {
