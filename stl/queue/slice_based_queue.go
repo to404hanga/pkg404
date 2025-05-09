@@ -1,8 +1,8 @@
 package queue
 
 import (
+	"github.com/to404hanga/pkg404/gotools/transform"
 	"github.com/to404hanga/pkg404/stl/interfaces"
-	"github.com/to404hanga/pkg404/stl/transform"
 )
 
 type SliceBasedQueue[T any] struct {
