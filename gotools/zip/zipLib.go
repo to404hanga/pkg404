@@ -83,13 +83,8 @@ func ZipLib(dst, src string, encrypt bool, password, enc string) error {
 		}
 		defer file.Close()
 
-		ret, err := io.Copy(fh, file)
-		if err != nil {
-			return err
-		}
-
-		log.Printf("added: %s, total: %d\n", path, ret)
-		return nil
+		_, err = io.Copy(fh, file)
+		return err
 	})
 }
 
@@ -113,3 +108,60 @@ const (
 	AES192   = "AES192"
 	Default  = "AES256"
 )
+
+// UnzipLib 解压加密的zip文件
+// src: 源zip文件路径
+// dst: 目标解压目录路径
+// password: 解密密码
+func UnzipLib(src, dst, password string) error {
+	// 使用支持加密的zip库打开文件
+	zipReader, err := zip.OpenReader(src)
+	if err != nil {
+		return err
+	}
+	defer zipReader.Close()
+
+	os.MkdirAll(dst, 0755)
+
+	for _, file := range zipReader.File {
+		targetPath := filepath.Join(dst, file.Name)
+
+		if file.FileInfo().IsDir() {
+			os.MkdirAll(targetPath, file.FileInfo().Mode())
+			continue
+		}
+
+		err = extractEncryptedFile(file, targetPath, password)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+// extractEncryptedFile 提取加密的单个文件
+func extractEncryptedFile(file *zip.File, targetPath, password string) error {
+	os.MkdirAll(filepath.Dir(targetPath), 0755)
+
+	// 设置密码（如果文件是加密的）
+	if file.IsEncrypted() {
+		file.SetPassword(password)
+	}
+
+	// 打开文件
+	zipFile, err := file.Open()
+	if err != nil {
+		return err
+	}
+	defer zipFile.Close()
+
+	targetFile, err := os.Create(targetPath)
+	if err != nil {
+		return err
+	}
+	defer targetFile.Close()
+
+	_, err = io.Copy(targetFile, zipFile)
+	return err
+}
