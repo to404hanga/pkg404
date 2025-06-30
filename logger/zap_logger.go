@@ -8,7 +8,7 @@ type ZapLogger struct {
 
 var _ Logger = (*ZapLogger)(nil)
 
-func NewZapLogger(logger *zap.Logger) Logger {
+func NewZapLogger(logger *zap.Logger) *ZapLogger {
 	return &ZapLogger{logger: logger}
 }
 
