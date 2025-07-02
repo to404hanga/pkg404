@@ -10,9 +10,17 @@ import (
 	"github.com/itnotebooks/zip"
 )
 
+type EncryptConfig struct {
+	Password string
+	Enc      string
+}
+
 // ZipLib 递归压缩文件或目录，支持AES加密
+//
+// 如果 cfg 为空，则不加密
+//
 // 加密方式: Standard, AES128, AES192, AES256(默认)
-func ZipLib(dst, src string, encrypt bool, password, enc string) error {
+func ZipLib(dst, src string, cfg ...EncryptConfig) error {
 	// 创建压缩文件
 	zfile, err := os.Create(dst)
 	if err != nil {
@@ -61,9 +69,9 @@ func ZipLib(dst, src string, encrypt bool, password, enc string) error {
 
 		// 创建文件写入器
 		var fh io.Writer
-		if encrypt {
-			encryption := getEncryption(enc)
-			fh, err = zFileWriter.Encrypt(header, password, encryption)
+		if len(cfg) != 0 {
+			encryption := getEncryption(cfg[0].Enc)
+			fh, err = zFileWriter.Encrypt(header, cfg[0].Password, encryption)
 		} else {
 			fh, err = zFileWriter.CreateHeader(header)
 		}
