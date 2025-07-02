@@ -26,7 +26,12 @@ func ZipLib(dst, src string, cfg ...EncryptConfig) error {
 	if err != nil {
 		return err
 	}
-	defer zfile.Close()
+	defer func() {
+		zfile.Close()
+		if err != nil {
+			os.Remove(dst)
+		}
+	}()
 
 	// 创建zip写入器
 	zFileWriter := zip.NewWriter(zfile)
