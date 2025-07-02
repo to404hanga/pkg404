@@ -9,14 +9,15 @@ import (
 )
 
 type FileZapLogger struct {
-	logger *ZapLogger
-	used   string
-	mode   string
+	logger   *ZapLogger
+	used     string
+	mode     string
+	onlyFile bool
 }
 
 var _ Logger = (*FileZapLogger)(nil)
 
-func NewFileZapLogger(mode, outputPath string) *FileZapLogger {
+func NewFileZapLogger(mode, outputPath string, onlyFile bool) *FileZapLogger {
 	var cfg zap.Config
 	switch mode {
 	case "dev", "test":
@@ -41,7 +42,11 @@ func NewFileZapLogger(mode, outputPath string) *FileZapLogger {
 			}
 		}
 	}
-	cfg.OutputPaths = append(cfg.OutputPaths, outputPath)
+	if onlyFile {
+		cfg.OutputPaths = []string{outputPath}
+	} else {
+		cfg.OutputPaths = append(cfg.OutputPaths, outputPath)
+	}
 
 	l, err := cfg.Build(
 		zap.AddStacktrace(zap.ErrorLevel),
@@ -51,16 +56,16 @@ func NewFileZapLogger(mode, outputPath string) *FileZapLogger {
 		panic(err)
 	}
 	return &FileZapLogger{
-		mode:   mode,
-		logger: NewZapLogger(l),
-		used:   outputPath,
+		mode:     mode,
+		logger:   NewZapLogger(l),
+		used:     outputPath,
+		onlyFile: onlyFile,
 	}
 }
 
 type LoggerFunc func(string, ...Field)
 
 func (l *FileZapLogger) hook(fn LoggerFunc, msg string, args ...Field) {
-	println("进入 hook")
 	now := time.Now().Format("20060102")
 	newFile := "./logs/" + now + ".log"
 	if l.used != newFile {
@@ -74,7 +79,7 @@ func (l *FileZapLogger) hook(fn LoggerFunc, msg string, args ...Field) {
 			if err != nil {
 				panic(err)
 			}
-			l = NewFileZapLogger(l.mode, newFile)
+			l = NewFileZapLogger(l.mode, newFile, l.onlyFile)
 		}
 	}
 	fn(msg, args...)
