@@ -79,10 +79,17 @@ func (l *FileZapLogger) hook(fn LoggerFunc, msg string, args ...Field) {
 			if err != nil {
 				panic(err)
 			}
-			l = NewFileZapLogger(l.mode, newFile, l.onlyFile)
+			nl := NewFileZapLogger(l.mode, newFile, l.onlyFile)
+			l = nl
 		}
 	}
 	fn(msg, args...)
+}
+
+func (l *FileZapLogger) With(args ...Field) *FileZapLogger {
+	nl := NewFileZapLogger(l.mode, l.used, l.onlyFile)
+	nl.logger.withFields = args
+	return nl
 }
 
 func (l *FileZapLogger) Info(msg string, args ...Field) {
