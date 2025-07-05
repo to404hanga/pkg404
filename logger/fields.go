@@ -61,11 +61,39 @@ func Int(key string, val int) Field {
 	return Field{Key: key, Val: val}
 }
 
+func Int8(key string, val int8) Field {
+	return Field{Key: key, Val: val}
+}
+
+func Int16(key string, val int16) Field {
+	return Field{Key: key, Val: val}
+}
+
 func Int32(key string, val int32) Field {
 	return Field{Key: key, Val: val}
 }
 
 func Int64(key string, val int64) Field {
+	return Field{Key: key, Val: val}
+}
+
+func Uint(key string, val uint) Field {
+	return Field{Key: key, Val: val}
+}
+
+func Uint8(key string, val uint8) Field {
+	return Field{Key: key, Val: val}
+}
+
+func Uint16(key string, val uint16) Field {
+	return Field{Key: key, Val: val}
+}
+
+func Uint32(key string, val uint32) Field {
+	return Field{Key: key, Val: val}
+}
+
+func Uint64(key string, val uint64) Field {
 	return Field{Key: key, Val: val}
 }
 
