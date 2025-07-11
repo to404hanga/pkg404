@@ -104,7 +104,7 @@ func (db *db) MustUpdate(ctx context.Context, obj any, where ...any) error {
 	if rowsAffected == 0 {
 		err = errors.WithStack(ErrNoRecordAffected)
 	}
-	return nil
+	return err
 }
 
 func (db *db) UpdateWithResult(ctx context.Context, obj any, where ...any) (rowsAffected int64, err error) {
