@@ -5,6 +5,8 @@ import (
 	"math"
 	"math/big"
 	"testing"
+
+	"github.com/to404hanga/pkg404/cachex/lru/internal/interfaces"
 )
 
 func getRand(tb testing.TB) int64 {
@@ -15,8 +17,8 @@ func getRand(tb testing.TB) int64 {
 	return out.Int64()
 }
 
-func BenchmarkLRU_Rand(b *testing.B) {
-	l, err := New(8192)
+func BenchmarkLRU_Rand_SimpleLRU(b *testing.B) {
+	l, err := NewSimpleLRU(8192)
 	if err != nil {
 		b.Fatalf("err: %v", err)
 	}
@@ -44,8 +46,8 @@ func BenchmarkLRU_Rand(b *testing.B) {
 	b.Logf("hit: %d miss: %d ratio: %f", hit, miss, float64(hit)/float64(miss))
 }
 
-func BenchmarkLRU_Freq(b *testing.B) {
-	l, err := New(8192)
+func BenchmarkLRU_Freq_SimpleLRU(b *testing.B) {
+	l, err := NewSimpleLRU(8192)
 	if err != nil {
 		b.Fatalf("err: %v", err)
 	}
@@ -76,7 +78,7 @@ func BenchmarkLRU_Freq(b *testing.B) {
 	b.Logf("hit: %d miss: %d ratio: %f", hit, miss, float64(hit)/float64(miss))
 }
 
-func TestLRU(t *testing.T) {
+func TestSimpleLRU(t *testing.T) {
 	evictCounter := 0
 	onEvicted := func(k any, v any) {
 		if k != v {
@@ -84,7 +86,7 @@ func TestLRU(t *testing.T) {
 		}
 		evictCounter++
 	}
-	l, err := NewWithEvict(128, onEvicted)
+	l, err := NewSimpleLRUWithEvict(128, onEvicted)
 	if err != nil {
 		t.Fatalf("err: %v", err)
 	}
@@ -142,13 +144,13 @@ func TestLRU(t *testing.T) {
 	}
 }
 
-func TestLRUAdd(t *testing.T) {
+func TestSimpleLRUAdd(t *testing.T) {
 	evictCounter := 0
 	onEvicted := func(k any, v any) {
 		evictCounter++
 	}
 
-	l, err := NewWithEvict(1, onEvicted)
+	l, err := NewSimpleLRUWithEvict(1, onEvicted)
 	if err != nil {
 		t.Fatalf("err: %v", err)
 	}
@@ -161,8 +163,8 @@ func TestLRUAdd(t *testing.T) {
 	}
 }
 
-func TestLRUContains(t *testing.T) {
-	l, err := New(2)
+func TestSimpleLRUContains(t *testing.T) {
+	l, err := NewSimpleLRU(2)
 	if err != nil {
 		t.Fatalf("err: %v", err)
 	}
@@ -179,8 +181,8 @@ func TestLRUContains(t *testing.T) {
 	}
 }
 
-func TestLRUContainsOrAdd(t *testing.T) {
-	l, err := New(2)
+func TestSimpleLRUContainsOrAdd(t *testing.T) {
+	l, err := NewSimpleLRU(2)
 	if err != nil {
 		t.Fatalf("err: %v", err)
 	}
@@ -208,8 +210,8 @@ func TestLRUContainsOrAdd(t *testing.T) {
 	}
 }
 
-func TestLRUPeekOrAdd(t *testing.T) {
-	l, err := New(2)
+func TestSimpleLRUPeekOrAdd(t *testing.T) {
+	l, err := NewSimpleLRU(2)
 	if err != nil {
 		t.Fatalf("err: %v", err)
 	}
@@ -240,8 +242,8 @@ func TestLRUPeekOrAdd(t *testing.T) {
 	}
 }
 
-func TestLRUPeek(t *testing.T) {
-	l, err := New(2)
+func TestSimpleLRUPeek(t *testing.T) {
+	l, err := NewSimpleLRU(2)
 	if err != nil {
 		t.Fatalf("err: %v", err)
 	}
@@ -258,19 +260,19 @@ func TestLRUPeek(t *testing.T) {
 	}
 }
 
-func TestLRUResize(t *testing.T) {
+func TestSimpleLRUResize(t *testing.T) {
 	onEvictCounter := 0
 	onEvicted := func(k any, v any) {
 		onEvictCounter++
 	}
-	l, err := NewWithEvict(2, onEvicted)
+	l, err := NewSimpleLRUWithEvict(2, onEvicted)
 	if err != nil {
 		t.Fatalf("err: %v", err)
 	}
 
 	l.Add(1, 1)
 	l.Add(2, 2)
-	evicted := l.Resize(1)
+	evicted := l.Resize(interfaces.WithSize(1))
 	if evicted != 1 {
 		t.Errorf("1 element should have been evicted: %v", evicted)
 	}
@@ -283,7 +285,7 @@ func TestLRUResize(t *testing.T) {
 		t.Errorf("Element 1 should have been evicted")
 	}
 
-	evicted = l.Resize(2)
+	evicted = l.Resize(interfaces.WithSize(2))
 	if evicted != 0 {
 		t.Errorf("0 elements should have been evicted: %v", evicted)
 	}

@@ -3,6 +3,8 @@ package simple_lru
 import (
 	"container/list"
 	"errors"
+
+	"github.com/to404hanga/pkg404/cachex/lru/internal/interfaces"
 )
 
 type EvictCallback func(key any, value any)
@@ -127,7 +129,18 @@ func (c *LRU) Len() int {
 	return c.evictList.Len()
 }
 
-func (c *LRU) Resize(size int) (evicted int) {
+func (c *LRU) Resize(opts ...*interfaces.SizeOptions) (evicted int) {
+	var size int
+	for _, opt := range opts {
+		if opt.Key == "size" {
+			size = opt.Value
+		}
+	}
+	if size <= 0 {
+		c.Purge()
+		return -1
+	}
+
 	diff := c.Len() - size
 	if diff < 0 {
 		diff = 0

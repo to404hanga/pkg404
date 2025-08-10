@@ -2,8 +2,11 @@ package lru
 
 import (
 	"sync"
+	"time"
 
-	"github.com/to404hanga/pkg404/cachex/lru/simple_lru"
+	"github.com/to404hanga/pkg404/cachex/lru/internal/interfaces"
+	"github.com/to404hanga/pkg404/cachex/lru/internal/simple_lru"
+	"github.com/to404hanga/pkg404/cachex/lru/internal/young_old_lru"
 )
 
 const (
@@ -11,18 +14,35 @@ const (
 )
 
 type Cache struct {
-	lru         *simple_lru.LRU
+	lru         interfaces.LRUCache
 	evictedKeys []any
 	evictedVals []any
 	onEvictedCB func(k, v any)
 	lock        sync.RWMutex
 }
 
-func New(size int) (*Cache, error) {
-	return NewWithEvict(size, nil)
+func NewYoungOldLRU(size, youngSize int, stayTime time.Duration) (*Cache, error) {
+	return NewYoungOldLRUWithEvict(size, youngSize, stayTime, nil)
 }
 
-func NewWithEvict(size int, onEvicted func(k, v any)) (c *Cache, err error) {
+func NewYoungOldLRUWithEvict(size, youngSize int, stayTime time.Duration, onEvicted func(k, v any)) (c *Cache, err error) {
+	c = &Cache{
+		onEvictedCB: onEvicted,
+	}
+	if onEvicted != nil {
+		c.initEvictBuffers()
+		onEvicted = c.onEvicted
+	}
+	c.lru, err = young_old_lru.NewYoungOldLRU(size, youngSize, stayTime, onEvicted)
+
+	return
+}
+
+func NewSimpleLRU(size int) (*Cache, error) {
+	return NewSimpleLRUWithEvict(size, nil)
+}
+
+func NewSimpleLRUWithEvict(size int, onEvicted func(k, v any)) (c *Cache, err error) {
 	c = &Cache{
 		onEvictedCB: onEvicted,
 	}
@@ -150,10 +170,10 @@ func (c *Cache) Remove(key any) (present bool) {
 	return
 }
 
-func (c *Cache) Resize(size int) (evicted int) {
+func (c *Cache) Resize(opts ...*interfaces.SizeOptions) (evicted int) {
 	var ks, vs []any
 	c.lock.Lock()
-	evicted = c.lru.Resize(size)
+	evicted = c.lru.Resize(opts...)
 	if c.onEvictedCB != nil && evicted > 0 {
 		ks, vs = c.evictedKeys, c.evictedVals
 		c.initEvictBuffers()
