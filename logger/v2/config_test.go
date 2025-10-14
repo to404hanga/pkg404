@@ -25,6 +25,20 @@ func TestDefaultLoggerConfig(t *testing.T) {
 		t.Error("default config should not extract all context values")
 	}
 	
+	// 验证输出配置
+	if config.Output == nil {
+		t.Fatal("Expected Output config to be set")
+	}
+	if config.Output.Mode != OutputModeConsole {
+		t.Errorf("Expected default output mode to be %s, got %s", OutputModeConsole, config.Output.Mode)
+	}
+	if !config.Output.AutoCreateDir {
+		t.Error("Expected AutoCreateDir to be true by default")
+	}
+	if config.Output.Level != "dev" {
+		t.Errorf("Expected default level to be 'dev', got %s", config.Output.Level)
+	}
+	
 	// 验证默认提取器的配置
 	if extractor, ok := config.ContextExtractor.(*DefaultContextExtractor); ok {
 		if len(extractor.Keys) == 0 {
@@ -60,6 +74,12 @@ func TestLoggerConfigCustomization(t *testing.T) {
 		EnableContextExtraction: false,
 		ContextExtractor:        customExtractor,
 		ExtractAllContextValues: true,
+		Output: &OutputConfig{
+			Mode:          OutputModeFile,
+			FilePath:      "./custom.log",
+			AutoCreateDir: false,
+			Level:         "prod",
+		},
 	}
 	
 	// 验证自定义配置值
@@ -73,6 +93,23 @@ func TestLoggerConfigCustomization(t *testing.T) {
 	
 	if !config.ExtractAllContextValues {
 		t.Error("custom config should extract all context values")
+	}
+	
+	// 验证自定义输出配置
+	if config.Output == nil {
+		t.Fatal("Expected Output config to be set")
+	}
+	if config.Output.Mode != OutputModeFile {
+		t.Errorf("Expected output mode to be %s, got %s", OutputModeFile, config.Output.Mode)
+	}
+	if config.Output.FilePath != "./custom.log" {
+		t.Errorf("Expected file path to be './custom.log', got %s", config.Output.FilePath)
+	}
+	if config.Output.AutoCreateDir {
+		t.Error("Expected AutoCreateDir to be false")
+	}
+	if config.Output.Level != "prod" {
+		t.Errorf("Expected level to be 'prod', got %s", config.Output.Level)
 	}
 	
 	// 验证自定义提取器

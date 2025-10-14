@@ -30,6 +30,73 @@ func NewZapCtxLogger(logger *zap.Logger, config ...*LoggerConfig) *ZapCtxLogger 
 	}
 }
 
+// NewZapCtxLoggerWithConfig 根据配置创建一个新的 ZapCtxLogger 实例
+// 如果配置中包含输出设置，会自动创建相应的 zap.Logger
+func NewZapCtxLoggerWithConfig(config *LoggerConfig) (*ZapCtxLogger, error) {
+	if config == nil {
+		config = DefaultLoggerConfig()
+	}
+	
+	// 如果配置中有输出设置，创建相应的 zap.Logger
+	if config.Output != nil {
+		zapLogger, err := createZapLogger(config.Output)
+		if err != nil {
+			return nil, err
+		}
+		
+		return &ZapCtxLogger{
+			logger: zapLogger,
+			config: config,
+		}, nil
+	}
+	
+	// 如果没有输出配置，使用默认的开发配置
+	zapConfig := zap.NewDevelopmentConfig()
+	zapLogger, err := zapConfig.Build(
+		zap.AddStacktrace(zap.ErrorLevel),
+		zap.AddCallerSkip(2),
+	)
+	if err != nil {
+		return nil, err
+	}
+	
+	return &ZapCtxLogger{
+		logger: zapLogger,
+		config: config,
+	}, nil
+}
+
+// NewConsoleLogger 创建一个输出到控制台的 logger
+func NewConsoleLogger() (*ZapCtxLogger, error) {
+	config := DefaultLoggerConfig()
+	config.Output.Mode = OutputModeConsole
+	return NewZapCtxLoggerWithConfig(config)
+}
+
+// NewFileLogger 创建一个输出到文件的 logger
+func NewFileLogger(filePath string) (*ZapCtxLogger, error) {
+	config := DefaultFileLoggerConfig(filePath)
+	return NewZapCtxLoggerWithConfig(config)
+}
+
+// NewBothLogger 创建一个同时输出到控制台和文件的 logger
+func NewBothLogger(filePath string) (*ZapCtxLogger, error) {
+	config := DefaultBothLoggerConfig(filePath)
+	return NewZapCtxLoggerWithConfig(config)
+}
+
+// NewLoggerWithLevel 创建指定级别的 logger
+func NewLoggerWithLevel(mode OutputMode, filePath, level string) (*ZapCtxLogger, error) {
+	config := DefaultLoggerConfig()
+	config.Output = &OutputConfig{
+		Mode:          mode,
+		FilePath:      filePath,
+		AutoCreateDir: true,
+		Level:         level,
+	}
+	return NewZapCtxLoggerWithConfig(config)
+}
+
 // WithContext 设置 context 并返回新的 logger 实例
 func (l *ZapCtxLogger) WithContext(ctx context.Context) Logger {
 	newLogger := &ZapCtxLogger{
