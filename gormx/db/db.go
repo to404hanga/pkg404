@@ -121,7 +121,7 @@ func (db *db) Updates(ctx context.Context, obj, values any, where ...any) error 
 	if len(where) > 0 {
 		m = m.Where(where[0], where[1:]...)
 	}
-	return m.Updates(obj).Error
+	return m.Updates(values).Error
 }
 
 func (db *db) MustUpdates(ctx context.Context, obj, values any, where ...any) error {
