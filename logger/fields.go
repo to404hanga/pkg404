@@ -97,6 +97,14 @@ func Uint64(key string, val uint64) Field {
 	return Field{Key: key, Val: val}
 }
 
+func Float32(key string, val float32) Field {
+	return Field{Key: key, Val: val}
+}
+
+func Float64(key string, val float64) Field {
+	return Field{Key: key, Val: val}
+}
+
 // 默认 layout 为 time.RFC3339，仅第一个有效
 func TimeString(val time.Time, layout ...string) Field {
 	if len(layout) > 0 {
