@@ -106,7 +106,7 @@ func (d *DoubleWritePool) PrepareContext(ctx context.Context, query string) (*sq
 	panic("双写模式不支持 PrepareContext(ctx context.Context, query string) (*sql.Stmt, error)")
 }
 
-func (d *DoubleWritePool) ExecContext(ctx context.Context, query string, args ...interface{}) (sql.Result, error) {
+func (d *DoubleWritePool) ExecContext(ctx context.Context, query string, args ...any) (sql.Result, error) {
 	switch d.pattern.Load() {
 	case PatternSrcOnly:
 		return d.src.ExecContext(ctx, query, args...)
@@ -135,7 +135,7 @@ func (d *DoubleWritePool) ExecContext(ctx context.Context, query string, args ..
 	}
 }
 
-func (d *DoubleWritePool) QueryContext(ctx context.Context, query string, args ...interface{}) (*sql.Rows, error) {
+func (d *DoubleWritePool) QueryContext(ctx context.Context, query string, args ...any) (*sql.Rows, error) {
 	switch d.pattern.Load() {
 	case PatternSrcOnly, PatternSrcFirst:
 		return d.src.QueryContext(ctx, query, args...)
@@ -146,7 +146,7 @@ func (d *DoubleWritePool) QueryContext(ctx context.Context, query string, args .
 	}
 }
 
-func (d *DoubleWritePool) QueryRowContext(ctx context.Context, query string, args ...interface{}) *sql.Row {
+func (d *DoubleWritePool) QueryRowContext(ctx context.Context, query string, args ...any) *sql.Row {
 	switch d.pattern.Load() {
 	case PatternSrcOnly, PatternSrcFirst:
 		return d.src.QueryRowContext(ctx, query, args...)
@@ -239,7 +239,7 @@ func (d *DoubleWriteTx) PrepareContext(ctx context.Context, query string) (*sql.
 	panic("双写模式不支持 PrepareContext(ctx context.Context, query string) (*sql.Stmt, error)")
 }
 
-func (d *DoubleWriteTx) ExecContext(ctx context.Context, query string, args ...interface{}) (sql.Result, error) {
+func (d *DoubleWriteTx) ExecContext(ctx context.Context, query string, args ...any) (sql.Result, error) {
 	switch d.pattern {
 	case PatternSrcOnly:
 		return d.src.ExecContext(ctx, query, args...)
@@ -268,7 +268,7 @@ func (d *DoubleWriteTx) ExecContext(ctx context.Context, query string, args ...i
 	}
 }
 
-func (d *DoubleWriteTx) QueryContext(ctx context.Context, query string, args ...interface{}) (*sql.Rows, error) {
+func (d *DoubleWriteTx) QueryContext(ctx context.Context, query string, args ...any) (*sql.Rows, error) {
 	switch d.pattern {
 	case PatternSrcOnly, PatternSrcFirst:
 		return d.src.QueryContext(ctx, query, args...)
@@ -279,7 +279,7 @@ func (d *DoubleWriteTx) QueryContext(ctx context.Context, query string, args ...
 	}
 }
 
-func (d *DoubleWriteTx) QueryRowContext(ctx context.Context, query string, args ...interface{}) *sql.Row {
+func (d *DoubleWriteTx) QueryRowContext(ctx context.Context, query string, args ...any) *sql.Row {
 	switch d.pattern {
 	case PatternSrcOnly, PatternSrcFirst:
 		return d.src.QueryRowContext(ctx, query, args...)

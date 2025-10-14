@@ -44,7 +44,7 @@ func (m *MockLimiter) Limit(ctx context.Context, key string) (bool, error) {
 }
 
 // Limit indicates an expected call of Limit.
-func (mr *MockLimiterMockRecorder) Limit(ctx, key interface{}) *gomock.Call {
+func (mr *MockLimiterMockRecorder) Limit(ctx, key any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Limit", reflect.TypeOf((*MockLimiter)(nil).Limit), ctx, key)
 }

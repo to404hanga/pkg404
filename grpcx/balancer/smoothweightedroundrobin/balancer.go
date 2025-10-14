@@ -31,7 +31,7 @@ func (p *PickerBuilder) Build(info base.PickerBuildInfo) balancer.Picker {
 	if p.picker == nil {
 		conns := make([]*weightConn, 0, len(info.ReadySCs))
 		for sc, sci := range info.ReadySCs {
-			md, _ := sci.Address.Metadata.(map[string]interface{})
+			md, _ := sci.Address.Metadata.(map[string]any)
 			weightVal := md["weight"]
 			weight, _ := weightVal.(float64)
 			conns = append(conns, &weightConn{

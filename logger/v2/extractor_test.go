@@ -35,7 +35,7 @@ func TestDefaultContextExtractor(t *testing.T) {
 	}
 
 	// 验证提取的字段
-	fieldMap := make(map[string]interface{})
+	fieldMap := make(map[string]any)
 	for _, field := range fields {
 		fieldMap[field.Key] = field.Val
 	}
@@ -71,7 +71,7 @@ func TestDefaultContextExtractorWithContextKey(t *testing.T) {
 	}
 
 	// 验证提取的字段
-	fieldMap := make(map[string]interface{})
+	fieldMap := make(map[string]any)
 	for _, field := range fields {
 		fieldMap[field.Key] = field.Val
 	}
@@ -108,7 +108,7 @@ func TestDefaultContextExtractorWithMixedKeys(t *testing.T) {
 	}
 
 	// 验证不同类型的 key 都能正确处理
-	fieldMap := make(map[string]interface{})
+	fieldMap := make(map[string]any)
 	for _, field := range fields {
 		fieldMap[field.Key] = field.Val
 	}
@@ -161,7 +161,7 @@ func TestAllContextExtractor(t *testing.T) {
 	}
 
 	// 验证提取的字段
-	fieldMap := make(map[string]interface{})
+	fieldMap := make(map[string]any)
 	for _, field := range fields {
 		fieldMap[field.Key] = field.Val
 	}
@@ -268,7 +268,7 @@ func TestExtractorFieldTypes(t *testing.T) {
 	}
 
 	// 验证所有类型的值都能正确提取
-	fieldMap := make(map[string]interface{})
+	fieldMap := make(map[string]any)
 	for _, field := range fields {
 		fieldMap[field.Key] = field.Val
 	}

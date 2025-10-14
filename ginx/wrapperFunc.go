@@ -19,7 +19,7 @@ func InitCounter(opt prometheus.CounterOpts) {
 	prometheus.MustRegister(vector)
 }
 
-func WrapBodyAndClaims[Req interface{}, Claims interface{}](bizFunc func(ctx *gin.Context, req Req, claims Claims) (Result, error)) gin.HandlerFunc {
+func WrapBodyAndClaims[Req any, Claims any](bizFunc func(ctx *gin.Context, req Req, claims Claims) (Result, error)) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var req Req
 		if err := ctx.Bind(&req); err != nil {
@@ -46,7 +46,7 @@ func WrapBodyAndClaims[Req interface{}, Claims interface{}](bizFunc func(ctx *gi
 	}
 }
 
-func WrapBody[Req interface{}](bizFunc func(ctx *gin.Context, req Req) (Result, error)) gin.HandlerFunc {
+func WrapBody[Req any](bizFunc func(ctx *gin.Context, req Req) (Result, error)) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var req Req
 		if err := ctx.Bind(&req); err != nil {
@@ -63,7 +63,7 @@ func WrapBody[Req interface{}](bizFunc func(ctx *gin.Context, req Req) (Result, 
 	}
 }
 
-func WrapClaims[Claims interface{}](bizFunc func(ctx *gin.Context, claims Claims) (Result, error)) gin.HandlerFunc {
+func WrapClaims[Claims any](bizFunc func(ctx *gin.Context, claims Claims) (Result, error)) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		val, ok := ctx.Get("user")
 		if !ok {
