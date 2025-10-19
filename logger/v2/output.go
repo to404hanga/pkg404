@@ -132,9 +132,13 @@ func createZapLogger(config LoggerConfig) (*zap.Logger, error) {
 	// 创建logger选项
 	var options []zap.Option
 	if config.Development {
-		options = append(options, zap.Development(), zap.AddCaller(), zap.AddStacktrace(zapcore.ErrorLevel))
+		options = append(options,
+			zap.Development(),
+			zap.AddCaller(),
+			zap.AddStacktrace(zapcore.ErrorLevel),
+			zap.AddCallerSkip(1))
 	} else {
-		options = append(options, zap.AddCaller())
+		options = append(options, zap.AddCaller(), zap.AddCallerSkip(1))
 	}
 
 	logger := zap.New(core, options...)
