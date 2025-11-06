@@ -18,11 +18,7 @@ func TestDoWithTimeout(t *testing.T) {
 	// 模拟一个总是失败的函数
 	err := Do(ctx, func() error {
 		return errors.New("always fail")
-	}, RetryOptions{
-		RetryTimes:        10,
-		BaseInterval:      200 * time.Millisecond,
-		BackoffMultiplier: 1.5,
-	})
+	}, WithRetryTimes(10), WithBaseInterval(200*time.Millisecond), WithBackoffMultiplier(1.5))
 
 	elapsed := time.Since(start)
 
@@ -54,11 +50,7 @@ func TestDoWithCancel(t *testing.T) {
 	// 模拟一个总是失败的函数
 	err := Do(ctx, func() error {
 		return errors.New("always fail")
-	}, RetryOptions{
-		RetryTimes:        10,
-		BaseInterval:      200 * time.Millisecond,
-		BackoffMultiplier: 1.5,
-	})
+	}, WithRetryTimes(10), WithBaseInterval(200*time.Millisecond), WithBackoffMultiplier(1.5))
 
 	elapsed := time.Since(start)
 
@@ -86,11 +78,7 @@ func TestDoSuccess(t *testing.T) {
 			return errors.New("fail")
 		}
 		return nil // 第二次调用成功
-	}, RetryOptions{
-		RetryTimes:        3,
-		BaseInterval:      100 * time.Millisecond,
-		BackoffMultiplier: 1.5,
-	})
+	}, WithRetryTimes(3), WithBaseInterval(100*time.Millisecond), WithBackoffMultiplier(1.5))
 
 	if err != nil {
 		t.Errorf("Expected success, got %v", err)
@@ -109,11 +97,7 @@ func TestDoAllFailed(t *testing.T) {
 	err := Do(ctx, func() error {
 		callCount++
 		return errors.New("always fail")
-	}, RetryOptions{
-		RetryTimes:        3,
-		BaseInterval:      50 * time.Millisecond,
-		BackoffMultiplier: 1.5,
-	})
+	}, WithRetryTimes(3), WithBaseInterval(50*time.Millisecond), WithBackoffMultiplier(1.5))
 
 	// 所有重试都失败时，应该返回nil（根据当前实现）
 	if err != nil {
