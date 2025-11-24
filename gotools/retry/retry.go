@@ -22,7 +22,7 @@ func Do(ctx context.Context, fn func() error, opts ...Option) error {
 	if optsContainer.async {
 		go func() {
 			finalErr := doInternal(ctx, fn, optsContainer)
-			if optsContainer.callback != nil {
+			if finalErr != nil && optsContainer.callback != nil {
 				optsContainer.callback(finalErr)
 			}
 		}()
